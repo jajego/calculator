@@ -14,6 +14,7 @@ body {
 
 button {
     background-color: rgb(107, 158, 153);
+    border: 1px solid white;
 }
 
 .display {
@@ -22,7 +23,10 @@ button {
     flex: 1 0 auto;
     background-color: #ddd;
     padding: 16px;
+    padding-left: 14px;
     font-size: 2em;
+    border: 1px solid white;
+    color: gray
 }
 
 .display-container {
@@ -39,6 +43,8 @@ button {
     /* background-color: rgb(225, 255, 246); */
     margin-top: 30px;
     /* padding: 20px; */
+    border: 15px solid pink;
+    box-shadow: 5px 5px skyblue, 10px 10px greenyellow, 15px 15px orangered;
 }
 
 .btn-container {
@@ -64,6 +70,7 @@ button {
 .btn-delete {
     background-color: rgb(200, 150, 150);
     width: 60px;
+    height: 35px;
 }
 
 .btn-decimal,
@@ -88,7 +95,7 @@ button {
     display: flex;
     width: 300px;
     justify-content: right;
-    padding: 5px;
+    padding: 20px;
     margin-top: 5px;
 }
 

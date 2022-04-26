@@ -5,7 +5,8 @@
 // - Make it look nice
 // - Keyboard support
 // - Display what the user has done?
-// -Evaluate when the user has only selected num1 and an operator
+// - Evaluate when the user has only selected num1 and an operator
+// - give backspace its own function
 
 
 const display = document.querySelector('.display')
@@ -38,6 +39,7 @@ for (let i = 0; i < operatorButtons.length; i++) {
         if (expression.isResult) {
             expression.isResult = false;
         }
+        // allows user to do consecutive experssions
         if (expression.num1.length > 0 && expression.num2.length > 0 && expression.op) {
             operate(expression.op, Number(expression.num1), Number(expression.num2));
             expression.isResult = false;
@@ -49,14 +51,18 @@ for (let i = 0; i < operatorButtons.length; i++) {
 
 // Backspace listener
 bspButton.addEventListener('click', () => {
-    if(expression.num1.length > 0 && !expression.op) {
-        expression.num1 = expression.num1.slice(0,-1);
-        displayUpdate(expression.num1);
+    if(display.textContent = 0) {
+        return;
+    } else {
+        if(expression.num1.length > 0 && !expression.op) {
+            expression.num1 = expression.num1.slice(0,-1);
+            displayUpdate(expression.num1);
 
-    }
-    if(expression.num1.length > 0 && expression.op) {
-        expression.num2 = expression.num2.slice(0, -1);
-        displayUpdate(expression.num2);
+        }
+        if(expression.num1.length > 0 && expression.op) {
+            expression.num2 = expression.num2.slice(0, -1);
+            displayUpdate(expression.num2);
+        }
     }
 })
 
@@ -100,6 +106,7 @@ function numberLogic(obj) {
         displayUpdate(expression.num1);
 
     } else {
+                // num1 
             if (expression.num1.length > 0 && !expression.op && expression.num2.length == 0) {
                     let update = expression.num1 += number;
                     displayUpdate(update)

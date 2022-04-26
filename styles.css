@@ -55,13 +55,16 @@ button {
 }
 
 
-
+.btn-delete {
+    background-color: rgb(255, 196, 196);
+}
 
 .btn-decimal,
 .btn-clear, 
 .btn-number {
     height: 40px;
     width: 40px;
+    margin: 3px;
 }
 
 

@@ -3,7 +3,6 @@
 // - Add modulo support
 // - Round decimal answers
 // - Make it look nice
-// - Backspace button
 // - Keyboard support
 // - Display what the user has done?
 // -Evaluate when the user has only selected num1 and an operator
@@ -15,13 +14,14 @@ const operatorButtons = document.querySelectorAll('.btn-operator');
 const equalsButton = document.getElementById('equals');
 const clearButton = document.getElementById('clear');
 const decButton = document.getElementById('decimal');
+const bspButton = document.getElementById('delete');
 
 display.textContent = 0;
 
-let data = {
+let expression = {
     op: undefined,
-    num1: 0,
-    num2: 0,
+    num1: '',
+    num2: '',
     isResult: false
 }
 
@@ -35,35 +35,54 @@ for (let i = 0; i < numberButtons.length; i++) {
 // Operator listeners
 for (let i = 0; i < operatorButtons.length; i++) {
     operatorButtons[i].addEventListener('click', (e) => {
-        if (data.isResult) {
-            data.isResult = false;
+        if (expression.isResult) {
+            expression.isResult = false;
         }
-        data.op = (e.target.id); 
+        if (expression.num1.length > 0 && expression.num2.length > 0 && expression.op) {
+            operate(expression.op, Number(expression.num1), Number(expression.num2));
+            expression.isResult = false;
+            displayUpdate(expression.num1);
+        }
+        expression.op = (e.target.id); 
     })
 }
 
+// Backspace listener
+bspButton.addEventListener('click', () => {
+    if(expression.num1.length > 0 && !expression.op) {
+        expression.num1 = expression.num1.slice(0,-1);
+        displayUpdate(expression.num1);
+
+    }
+    if(expression.num1.length > 0 && expression.op) {
+        expression.num2 = expression.num2.slice(0, -1);
+        displayUpdate(expression.num2);
+    }
+})
+
+
 // Decimal listener
 decButton.addEventListener('click', () => {
-    if(!data.op) {
-        if(data.num1.includes('.')) {
+    if(!expression.op) {
+        if(expression.num1.includes('.')) {
         return;
         }
-        data.num1 += '.'
-        displayUpdate(data.num1)
+        expression.num1 += '.'
+        displayUpdate(expression.num1)
     } else {
-        if(data.num2.includes('.')) {
+        if(expression.num2.includes('.')) {
         return;
     }
-        data.num2 += '.'
-        displayUpdate(data.num2)
+        expression.num2 += '.'
+        displayUpdate(expression.num2)
     }
 })
 
 // Equals listener
 equalsButton.addEventListener('click', () => {
-    if (data.op) {
-        operate(data.op, Number(data.num1), Number(data.num2));
-        displayUpdate(data.num1);
+    if (expression.op) {
+        operate(expression.op, Number(expression.num1), Number(expression.num2));
+        displayUpdate(expression.num1);
     }
 })
 
@@ -74,33 +93,34 @@ function numberLogic(obj) {
     let number = obj.target.textContent;
      // num1
 
-    if (data.isResult) {
+    if (expression.isResult) {
         console.log('Clearing result for new input');
         clear();
-        data.num1 = number;
-        displayUpdate(data.num1);
+        expression.num1 = number;
+        displayUpdate(expression.num1);
 
     } else {
-            if (!data.num1 == 0 && !data.op && !data.num2) {
-                    let result = data.num1 += number;
-                    displayUpdate(result)
-                    return result;
+            if (expression.num1.length > 0 && !expression.op && expression.num2.length == 0) {
+                    let update = expression.num1 += number;
+                    displayUpdate(update)
+                    return update;
                 }
                 // num1, op
-                if (data.num1 && data.op && data.num2 == 0) {
+                if (expression.num1.length > 0 && expression.op && expression.num2.length == 0) {
+                    console.log('hi');
                     displayUpdate(number);
-                    return data.num2 = number;
+                    return expression.num2 = number;
                 }
                 // num1, num2, op
-                if (data.num1 && data.op && !data.num2 == 0) {
-                    let result = data.num2 += number;
-                    displayUpdate(result);
-                    return result;
+                if (expression.num1.length > 0 && expression.op && expression.num2.length > 0) {
+                    let update = expression.num2 += number;
+                    displayUpdate(update);
+                    return update;
                 }
                 // empty (base)
-                if (data.num1 == 0 && data.num2 == 0) {
+                if (expression.num1.length == 0 && expression.num2.length == 0) {
                     displayUpdate(number);
-                    return data.num1 = number;
+                    return expression.num1 = number;
                 }
         }
 };
@@ -108,28 +128,28 @@ function numberLogic(obj) {
 function operate(operator, num1, num2) {
     switch (operator) {
         case 'sum':
-                data.num1 = sum(num1, num2);
-                data.num2 = 0;
-                data.op = undefined;
-                data.isResult = true;
+                expression.num1 = sum(num1, num2).toString();
+                expression.num2 = '';
+                expression.op = undefined;
+                expression.isResult = true;
                 break;
         case 'subtract':
-                data.num1 = subtract(num1, num2);
-                data.num2 = 0;
-                data.op = undefined;
-                data.isResult = true;
+                expression.num1 = subtract(num1, num2).toString();
+                expression.num2 = '';
+                expression.op = undefined;
+                expression.isResult = true;
                 break;
         case 'multiply':
-                data.num1 = multiply(num1, num2);
-                data.num2 = 0;
-                data.op = undefined;
-                data.isResult = true;
+                expression.num1 = multiply(num1, num2).toString();
+                expression.num2 = '';
+                expression.op = undefined;
+                expression.isResult = true;
                 break;
         case 'divide':
-                data.num1 = divide(num1, num2);
-                data.num2 = 0;
-                data.op = undefined;
-                data.isResult = true;
+                expression.num1 = divide(num1, num2).toString();
+                expression.num2 = '';
+                expression.op = undefined;
+                expression.isResult = true;
                 break;
     }
 }
@@ -139,10 +159,10 @@ function displayUpdate(num) {
 }
 
 function clear() {
-    data.op = undefined
-    data.num1 = 0
-    data.num2 = 0
-    data.isResult = false;
+    expression.op = undefined;
+    expression.num1 = '';
+    expression.num2 = '';
+    expression.isResult = false;
     displayUpdate(0);
 }
 

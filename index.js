@@ -1,21 +1,20 @@
 // To DO
-// - Clean up naming (particularly 'result')
+// - Clean up naming (particularly 'result', 'number')
 // - Add modulo support
 // - Round decimal answers
-// - Make it look nice
 // - Keyboard support
 // - Display what the user has done?
 // - Evaluate when the user has only selected num1 and an operator
 // - give backspace its own function
 
 
-const display = document.querySelector('.display')
-const numberButtons = document.querySelectorAll('.btn-number')
+const display         = document.querySelector('.display');
+const numberButtons   = document.querySelectorAll('.btn-number');
 const operatorButtons = document.querySelectorAll('.btn-operator');
-const equalsButton = document.getElementById('equals');
-const clearButton = document.getElementById('clear');
-const decButton = document.getElementById('decimal');
-const bspButton = document.getElementById('delete');
+const equalsButton    = document.getElementById('equals');
+const clearButton     = document.getElementById('clear');
+const decButton       = document.getElementById('decimal');
+const bspButton       = document.getElementById('delete');
 
 display.textContent = 0;
 
@@ -97,24 +96,21 @@ clearButton.addEventListener('click', () => clear());
 
 function numberLogic(obj) {
     let number = obj.target.textContent;
-     // num1
 
     if (expression.isResult) {
-        console.log('Clearing result for new input');
         clear();
         expression.num1 = number;
         displayUpdate(expression.num1);
 
     } else {
                 // num1 
-            if (expression.num1.length > 0 && !expression.op && expression.num2.length == 0) {
+                if (expression.num1.length > 0 && !expression.op && expression.num2.length == 0) {
                     let update = expression.num1 += number;
                     displayUpdate(update)
                     return update;
                 }
                 // num1, op
                 if (expression.num1.length > 0 && expression.op && expression.num2.length == 0) {
-                    console.log('hi');
                     displayUpdate(number);
                     return expression.num2 = number;
                 }
@@ -135,27 +131,27 @@ function numberLogic(obj) {
 function operate(operator, num1, num2) {
     switch (operator) {
         case 'sum':
-                expression.num1 = sum(num1, num2).toString();
-                expression.num2 = '';
-                expression.op = undefined;
+                expression.num1     = sum(num1, num2).toString();
+                expression.num2     = '';
+                expression.op       = undefined;
                 expression.isResult = true;
                 break;
         case 'subtract':
-                expression.num1 = subtract(num1, num2).toString();
-                expression.num2 = '';
-                expression.op = undefined;
+                expression.num1     = subtract(num1, num2).toString();
+                expression.num2     = '';
+                expression.op       = undefined;
                 expression.isResult = true;
                 break;
         case 'multiply':
-                expression.num1 = multiply(num1, num2).toString();
-                expression.num2 = '';
-                expression.op = undefined;
+                expression.num1     = multiply(num1, num2).toString();
+                expression.num2     = '';
+                expression.op       = undefined;
                 expression.isResult = true;
                 break;
         case 'divide':
-                expression.num1 = divide(num1, num2).toString();
-                expression.num2 = '';
-                expression.op = undefined;
+                expression.num1     = divide(num1, num2).toString();
+                expression.num2     = '';
+                expression.op       = undefined;
                 expression.isResult = true;
                 break;
     }
@@ -175,7 +171,6 @@ function clear() {
 
 // Operator functions
 const sum = (...nums) => {
-    console.log(nums);
     return nums.reduce( (total, current) => total + current, 0)
 }
 
